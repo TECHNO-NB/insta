@@ -5,7 +5,10 @@ const mongoose = require("mongoose");
 const { mongoUrl } = require("./keys");
 const cors = require("cors");
 const { METHODS } = require("http");
+const { options } = require("./routes/auth");
+const path = require("path");
 const http = require("http").createServer(app);
+const dotenv = require("dotenv").config();
 const io = require("socket.io")(http, {
   cors: {
     origin: "*",
@@ -44,6 +47,15 @@ io.on("connection", (socket) => {
     io.to(recipentId).emit("servermsg", msg.message);
     socket.emit("servermsg", msg.message);
   });
+});
+app.use(express.static(path.join(__dirname, "./frontend/build")));
+app.get("*", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "./frontend/build/index.html"),
+    function (err) {
+      res.status(500).send(err);
+    }
+  );
 });
 
 http.listen(port, () => {

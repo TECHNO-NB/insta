@@ -2,6 +2,6 @@
 
 
 module.exports = {
-    mongoUrl : "mongodb://127.0.0.1:27017/instagram",
-    Jwt_secret : "dfgvhfdfgv"
+    mongoUrl:process.env.MONGODB_URL,
+    Jwt_secret : process.env.JWT_SECRET
 }
